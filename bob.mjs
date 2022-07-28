@@ -21,7 +21,9 @@ function handleOps([msg, op], env, data) {
   switch(op) {
   case "ECHO":
     bobSay(msg);
-    if (env.SOCKET) env.SOCKET.write(msg);
+    if (env.SOCKET) {
+      env.SOCKET.write(data.slice(5));
+    };
     break;
   case "LOG":
     console.log(GREEN, "Bob's command log:");
