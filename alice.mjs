@@ -5,7 +5,7 @@ import {RED, GREEN, YELLOW,
 import * as Routine from './Routines.mjs';
 
 const aliceOperators = [
-  "ECHO", "MEM", "KNOCK", "LOG"
+  "ECHO", "KNOCK", "LOG"
 ];
 
 function aliceHear(msg) {
@@ -20,9 +20,6 @@ function handleOps([msg, op], stack, log) {
   switch(op) {
   case "ECHO":
     aliceSay(msg);
-    break;
-  case "MEM":
-    console.log(GREEN, "Alice's memory:");
     break;
   case "LOG":
     console.log(GREEN, "Alice's command log:");
@@ -42,7 +39,7 @@ function handleOps([msg, op], stack, log) {
 function handleStack([msg,op], stack) {
   const [routine, task] = stack.pop().split("->");
   switch (routine) {
-  case "KNOCK":
+  case "KNOCK": // I could abstract this, but why?
     if (task === "who") aliceSay(`${msg}, who?`);
     else {
       aliceSay("lel"); 
