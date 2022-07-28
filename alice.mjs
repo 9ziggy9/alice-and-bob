@@ -1,11 +1,12 @@
 import * as net from 'net';
+import * as fs from 'fs';
 import {RED, GREEN, YELLOW,
 	BLUE, MAGENTA, CYAN,
 	parseArgs} from './lib.mjs';
 import * as Routine from './Routines.mjs';
 
 const aliceOperators = [
-  "ECHO", "KNOCK", "LOG"
+  "ECHO", "KNOCK", "LOG", "GET",
 ];
 
 function aliceHear(msg) {
@@ -30,6 +31,10 @@ function handleOps([msg, op], stack, log) {
     aliceSay("Who's there?");
     Routine.knockKnock.reverse().forEach(op => stack.push(op));
     break;
+  case "GET":
+    const data = fs.readFileSync(`./${msg}.txt`, {encoding: 'utf8'});
+    data.trim().split("\n").forEach(line => aliceSay(line));
+    break;
   default:
     console.log(RED, "PANIC PANIC PANIC, operator not handled");
     return -1;
@@ -52,7 +57,7 @@ function handleStack([msg,op], stack) {
 // my server
 net.createServer(function (socket) {
   let LOG = [];
-  let STACK = [];
+  let STACK = []; // y no q? Stack faster.
   socket.on("data", function (data) {
     const args = parseArgs(data, aliceOperators);
     const [msg, op] = args;
@@ -64,5 +69,8 @@ net.createServer(function (socket) {
       aliceHear(msg);
     }
     LOG.push(`${op}::${msg}`);
+  });
+  socket.on("end", function () {
+    aliceSay("Good bye!");
   });
 }).listen(8080);
