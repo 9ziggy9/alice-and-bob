@@ -1,0 +1,20 @@
+* Alice and Bob
+Simple example of what a server is and does. Alice and Bob interfaces with native nodeJS net API to coerce binary blobs received at TCP ports into server instructions. Blobs are parsed then used to signal server procedures.
+** How to use
+Just run each server node with;
+#+BEGIN_SRC console
+node alice.js && node.bob.js
+#+END_SRC
+*** Interaction
+I highly recommend you interface with servers via netcat--netcat has existed since 1995 and provides the simplest UI I know of to send raw binary to a port.
+#+BEGIN_SRC console
+sudo apt install netcat
+#+END_SRC
+To use netcat to open a socket run (say on Alice);
+#+BEGIN_SRC console
+nc localhost 8080
+#+END_SRC
+Once the socket is open, you can give instructions,
+#+BEGIN_SRC console
+ECHO hello world
+#+END_SRC
